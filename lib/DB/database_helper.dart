@@ -1,13 +1,11 @@
 import 'package:sqlite3/sqlite3.dart';
 
 class DatabaseHelper {
-  final Database db;
+  static DatabaseHelper? _instance;
+  late final Database db;
 
-  DatabaseHelper._internal(this.db);
-
-  // Factory method to open database
-  factory DatabaseHelper() {
-    final db = sqlite3.open('db.db');
+  DatabaseHelper._internal() {
+    db = sqlite3.open('db.db');
 
     // Create table if not exists
     db.execute('''
@@ -17,7 +15,11 @@ class DatabaseHelper {
         age INTEGER NOT NULL
       );
     ''');
-    return DatabaseHelper._internal(db);
+  }
+
+  // Singleton instance
+  factory DatabaseHelper() {
+    return _instance ??= DatabaseHelper._internal();
   }
 
   // Insert
@@ -52,13 +54,12 @@ class DatabaseHelper {
 
   // Delete All
   void deleteAllPerson() {
-    db.execute(
-      'DELETE FROM Person',
-    );
+    db.execute('DELETE FROM Person');
   }
 
   // Close
   void close() {
     db.dispose();
+    _instance = null;
   }
 }
