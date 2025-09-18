@@ -11,7 +11,7 @@ class DatabaseHelper {
 
     // Create table if not exists
     db.execute('''
-      CREATE TABLE IF NOT EXISTS users (
+      CREATE TABLE IF NOT EXISTS Person (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         age INTEGER NOT NULL
@@ -21,23 +21,23 @@ class DatabaseHelper {
   }
 
   // Insert
-  void insertUser(String name, int age) {
+  void insertPerson(String name, int age) {
     db.execute(
-      'INSERT INTO users (name, age) VALUES (?, ?)',
+      'INSERT INTO Person (name, age) VALUES (?, ?)',
       [name, age],
     );
   }
 
-  // Read all users
-  List<Map<String, Object?>> getUsers() {
-    final result = db.select('SELECT * FROM users');
+  // Read all Person
+  List<Map<String, Object?>> getPerson() {
+    final result = db.select('SELECT * FROM Person');
     return result.map((row) => row).toList();
   }
 
   // Update
   void updateUser(String name, int newAge) {
     db.execute(
-      'UPDATE users SET age = ? WHERE name = ?',
+      'UPDATE Person SET age = ? WHERE name = ?',
       [newAge, name],
     );
   }
@@ -45,15 +45,15 @@ class DatabaseHelper {
   // Delete
   void deleteUser(String name) {
     db.execute(
-      'DELETE FROM users WHERE name = ?',
+      'DELETE FROM Person WHERE name = ?',
       [name],
     );
   }
 
   // Delete All
-  void deleteAllUsers() {
+  void deleteAllPerson() {
     db.execute(
-      'DELETE FROM users',
+      'DELETE FROM Person',
     );
   }
 
